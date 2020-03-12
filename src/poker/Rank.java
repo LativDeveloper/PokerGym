@@ -13,12 +13,14 @@ public class Rank {
     public static final char TEN    = 'T';
     public static final char JACK   = 'J';
     public static final char QUEEN  = 'Q';
-    public static final char KING   ='K';
+    public static final char KING   = 'K';
 
+    private char symbol;
     private int value;
 
 
     public Rank(char symbol) {
+        symbol = Character.toUpperCase(symbol);
         switch (symbol) {
             case TWO:
                 value = 0;
@@ -44,28 +46,29 @@ public class Rank {
             case NINE:
                 value = 7;
                 break;
-            case 'T':
-            case 't':
+            case TEN:
                 value = 8;
                 break;
-            case 'J':
-            case 'j':
+            case JACK:
                 value = 9;
                 break;
-            case 'Q':
-            case 'q':
+            case QUEEN:
                 value = 10;
                 break;
-            case 'K':
-            case 'k':
+            case KING:
                 value = 11;
                 break;
-            case 'A':
-            case 'a':
+            case ACE:
                 value = 12;
                 break;
             default:
                 value = -1;
         }
+        this.symbol = symbol;
+    }
+
+    @Override
+    public String toString() {
+        return Character.toString(symbol);
     }
 }
