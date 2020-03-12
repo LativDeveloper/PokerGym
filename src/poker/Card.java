@@ -1,23 +1,90 @@
 package poker;
 
 public class Card implements Comparable<Card> {
-    private Rank rank;
-    private Suit suit;
+    public static enum Rank {
+        TWO('2', 2),
+        ACE('A', 14),
+        EIGHT('8', 8),
+        FIVE('5', 5),
+        FOUR('4', 4),
+        JACK('J', 11),
+        KING('K', 13),
+        NINE('9', 9),
+        QUEEN('Q', 12),
+        SEVEN('7', 7),
+        SIX('6', 6),
+        TEN('T', 10),
+        THREE('3', 3);
+
+        public final char symbol;
+        public final int value;
+        Rank(char symbol, int value) {
+            this.symbol = symbol;
+            this.value = value;
+        }
+
+    }
+    public static enum Suit {
+        Hearts      ('♥'),
+        Clubs       ('♣'),
+        Spades      ('♠'),
+        Diamonds    ('♦');
+
+        public final char symbol;
+        Suit(char symbol) {
+            this.symbol = symbol;
+        }
+
+
+    }
+
+    private final Rank rank;
+    private final Suit suit;
 
     public Card(Rank rank, Suit suit) {
         this.rank = rank;
         this.suit = suit;
     }
 
-    public Card(String card) {
-        card = card.trim();
-        this.rank = new Rank(card.charAt(0));
-        this.suit = new Suit(card.charAt(1));
+    public Card(String cardStr) {
+        cardStr = cardStr.trim();
+        Suit resultSuit = null;
+        Rank resultRank = null;
+
+        char rankSymbol = cardStr.charAt(0);
+        for (Rank rank : Rank.values()) {
+            if (rank.symbol == rankSymbol){
+                resultRank = rank;
+                break;
+            }
+        }
+
+        char suitSymbol = cardStr.charAt(1);
+        for (Suit suit : Suit.values()) {
+            if (suit.symbol == suitSymbol) {
+                resultSuit = suit;
+                break;
+            }
+        }
+
+        this.rank = resultRank;
+        this.suit = resultSuit;
+        if (resultRank == null || resultSuit == null) {
+            System.err.println(String.format("Ошибка создания Card (%s)", cardStr));
+        }
+    }
+
+    public Rank getRank() {
+        return rank;
+    }
+
+    public Suit getSuit() {
+        return suit;
     }
 
     @Override
     public String toString() {
-        return rank.toString() + suit.toString();
+        return String.format("%s%s", rank.symbol, suit.symbol);
     }
 
     @Override
