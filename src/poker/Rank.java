@@ -1,6 +1,6 @@
 package poker;
 
-public class Rank {
+public class Rank implements Comparable<Rank> {
     public static final char ACE    = 'A';
     public static final char TWO    = '2';
     public static final char THREE  = '3';
@@ -70,5 +70,12 @@ public class Rank {
     @Override
     public String toString() {
         return Character.toString(symbol);
+    }
+
+    @Override
+    public int compareTo(Rank rank) {
+        if (value < rank.value) return -1;
+        if (value > rank.value) return 1;
+        return 0;
     }
 }

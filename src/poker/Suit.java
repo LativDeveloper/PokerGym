@@ -1,6 +1,6 @@
 package poker;
 
-public class Suit {
+public class Suit implements Comparable<Suit> {
     public static final char CLUBS       = 'c';
     public static final char DIAMONDS    = 'd';
     public static final char HEARTS      = 'h';
@@ -34,5 +34,12 @@ public class Suit {
     @Override
     public String toString() {
         return Character.toString(symbol);
+    }
+
+    @Override
+    public int compareTo(Suit suit) {
+        if (value < suit.value) return -1;
+        if (value > suit.value) return 1;
+        return 0;
     }
 }

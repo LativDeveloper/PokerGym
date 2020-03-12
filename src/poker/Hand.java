@@ -1,5 +1,7 @@
 package poker;
 
+import java.util.TreeSet;
+
 public class Hand {
     public static final int HIGH_CARD       = 0;
     public static final int ONE_PAIR        = 1;
@@ -12,24 +14,27 @@ public class Hand {
     public static final int STRAIGHT_FLUSH  = 8;
     public static final int ROYAL_FLUSH     = 9;
 
-    private Card[] cards;
+    private TreeSet<Card> cards;
 
     public Hand(Card ... cards) {
-        this.cards = cards;
+        this.cards = (TreeSet<Card>) new TreeSet<Card>().descendingSet();
+
+        for (int i = 0; i < cards.length; i++)
+            this.cards.add(cards[i]);
     }
 
     public Hand(String cards) {
         String[] array = cards.split(" ");
-        this.cards = new Card[array.length];
+        this.cards = (TreeSet<Card>) new TreeSet<Card>().descendingSet();
         for (int i = 0; i < array.length; i++)
-            this.cards[i] = new Card(array[i]);
+            this.cards.add(new Card(array[i]));
     }
 
     @Override
     public String toString() {
         String str = "";
-        for (int i = 0; i < cards.length; i++) {
-            str += cards[i] + " ";
+        for (Card card : cards) {
+            str += card + " ";
         }
         return str.substring(0, str.length() - 1);
     }
