@@ -25,14 +25,16 @@ public class Card implements Comparable<Card> {
 
     }
     public static enum Suit {
-        Hearts      ('♥'),
-        Clubs       ('♣'),
-        Spades      ('♠'),
-        Diamonds    ('♦');
+        HEARTS      ('♥', 1),
+        CLUBS       ('♣', 2),
+        SPADES      ('♠', 3),
+        DIAMONDS    ('♦', 4);
 
         public final char symbol;
-        Suit(char symbol) {
+        public final int value;
+        Suit(char symbol, int value) {
             this.symbol = symbol;
+            this.value = value;
         }
 
 
@@ -89,8 +91,12 @@ public class Card implements Comparable<Card> {
 
     @Override
     public int compareTo(Card card) {
-        int compareByRank = rank.compareTo(card.rank);
-        if (compareByRank == 0) return suit.compareTo(card.suit);
-        return compareByRank;
+        if (rank.value > card.rank.value) return 1;
+        if (rank.value < card.rank.value) return -1;
+
+        if (suit.value > card.suit.value) return 1;
+        if (suit.value < card.suit.value) return -1;
+
+        return 0;
     }
 }
