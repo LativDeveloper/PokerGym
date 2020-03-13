@@ -36,8 +36,6 @@ public class Card implements Comparable<Card> {
             this.symbol = symbol;
             this.value = value;
         }
-
-
     }
 
     private final Rank rank;

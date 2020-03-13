@@ -49,7 +49,7 @@ public class HandEvaluator {
     }
 
     private void initRanksMap() {
-        ranksCount = new TreeMap<Card.Rank, Integer>();
+        ranksCount = new LinkedHashMap<>();
         for (Card card : hand.getCards()) {
             if (ranksCount.keySet().contains(card.getRank()))
                 ranksCount.put(card.getRank(), ranksCount.get(card.getRank()) + 1);
@@ -59,7 +59,7 @@ public class HandEvaluator {
     }
 
     private void initSuitsMap() {
-        suitsCount = new TreeMap<Card.Suit, Integer>();
+        suitsCount = new LinkedHashMap<>();
         for (Card card : hand.getCards()) {
             if (suitsCount.keySet().contains(card.getSuit()))
                 suitsCount.put(card.getSuit(), suitsCount.get(card.getSuit()) + 1);
