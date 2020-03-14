@@ -1,99 +1,88 @@
 package poker;
 
+import java.util.HashMap;
+
 public class Card implements Comparable<Card> {
-    public static enum Rank {
-        TWO('2', 2),
-        ACE('A', 14),
-        EIGHT('8', 8),
-        FIVE('5', 5),
-        FOUR('4', 4),
-        JACK('J', 11),
-        KING('K', 13),
-        NINE('9', 9),
-        QUEEN('Q', 12),
-        SEVEN('7', 7),
-        SIX('6', 6),
-        TEN('T', 10),
-        THREE('3', 3);
 
-        public final char symbol;
-        public final int value;
-        Rank(char symbol, int value) {
-            this.symbol = symbol;
-            this.value = value;
-        }
-
+    private static HashMap<String, Integer> list = new HashMap<String, Integer>();
+    static {
+        list.put("2c", 1);
+        list.put("2d", 2);
+        list.put("2h", 3);
+        list.put("2s", 4);
+        list.put("3c", 5);
+        list.put("3d", 6);
+        list.put("3h", 7);
+        list.put("3s", 8);
+        list.put("4c", 9);
+        list.put("4d", 10);
+        list.put("4h", 11);
+        list.put("4s", 12);
+        list.put("5c", 13);
+        list.put("5d", 14);
+        list.put("5h", 15);
+        list.put("5s", 16);
+        list.put("6c", 17);
+        list.put("6d", 18);
+        list.put("6h", 19);
+        list.put("6s", 20);
+        list.put("7c", 21);
+        list.put("7d", 22);
+        list.put("7h", 23);
+        list.put("7s", 24);
+        list.put("8c", 25);
+        list.put("8d", 26);
+        list.put("8h", 27);
+        list.put("8s", 28);
+        list.put("9c", 29);
+        list.put("9d", 30);
+        list.put("9h", 31);
+        list.put("9s", 32);
+        list.put("tc", 33);
+        list.put("td", 34);
+        list.put("th", 35);
+        list.put("ts", 36);
+        list.put("jc", 37);
+        list.put("jd", 38);
+        list.put("jh", 39);
+        list.put("js", 40);
+        list.put("qc", 41);
+        list.put("qd", 42);
+        list.put("qh", 43);
+        list.put("qs", 44);
+        list.put("kc", 45);
+        list.put("kd", 46);
+        list.put("kh", 47);
+        list.put("ks", 48);
+        list.put("ac", 49);
+        list.put("ad", 50);
+        list.put("ah", 51);
+        list.put("as", 52);
     }
-    public static enum Suit {
-        HEARTS      ('♥', 1),
-        CLUBS       ('♣', 2),
-        SPADES      ('♠', 3),
-        DIAMONDS    ('♦', 4);
 
-        public final char symbol;
-        public final int value;
-        Suit(char symbol, int value) {
-            this.symbol = symbol;
-            this.value = value;
-        }
-    }
-
-    private final Rank rank;
-    private final Suit suit;
-
-    public Card(Rank rank, Suit suit) {
-        this.rank = rank;
-        this.suit = suit;
-    }
+    private String name;
+    private int value;
 
     public Card(String cardStr) {
-        cardStr = cardStr.trim();
-        Suit resultSuit = null;
-        Rank resultRank = null;
+        try {
+            cardStr = cardStr.trim();
 
-        char rankSymbol = cardStr.charAt(0);
-        for (Rank rank : Rank.values()) {
-            if (rank.symbol == rankSymbol){
-                resultRank = rank;
-                break;
-            }
+            value = list.get(cardStr.toLowerCase());
+            name = cardStr;
+        } catch (NullPointerException e) {
+            System.err.println(String.format("Неверная карты колоды! (%s)", cardStr));
         }
-
-        char suitSymbol = cardStr.charAt(1);
-        for (Suit suit : Suit.values()) {
-            if (suit.symbol == suitSymbol) {
-                resultSuit = suit;
-                break;
-            }
-        }
-
-        this.rank = resultRank;
-        this.suit = resultSuit;
-        if (resultRank == null || resultSuit == null) {
-            System.err.println(String.format("Ошибка создания Card (%s)", cardStr));
-        }
-    }
-
-    public Rank getRank() {
-        return rank;
-    }
-
-    public Suit getSuit() {
-        return suit;
     }
 
     @Override
     public String toString() {
-        return String.format("%s%s", rank.symbol, suit.symbol);
+        return name;
     }
 
     @Override
     public int compareTo(Card card) {
-        if (rank.value > card.rank.value) return 1;
-        if (rank.value < card.rank.value) return -1;
-
-        if (suit.value > card.suit.value) return 1;
-        if (suit.value < card.suit.value) return -1;
+        if (value > card.value) return 1;
+        if (value < card.value) return -1;
 
         return 0;
     }
