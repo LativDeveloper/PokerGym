@@ -1,10 +1,11 @@
 package poker;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class Card implements Comparable<Card> {
 
-    private static HashMap<String, Integer> list = new HashMap<String, Integer>();
+    public static HashMap<String, Integer> list = new HashMap<String, Integer>();
     static {
         list.put("2c", 1);
         list.put("2d", 2);
@@ -71,7 +72,24 @@ public class Card implements Comparable<Card> {
             name = cardStr;
         } catch (NullPointerException e) {
             System.err.println(String.format("Неверная карты колоды! (%s)", cardStr));
+            e.printStackTrace();
         }
+    }
+
+    public Card(int cardVal) {
+       for (Map.Entry<String, Integer> entry : list.entrySet()) {
+           if (entry.getValue() == cardVal) {
+               value = cardVal;
+               name = entry.getKey();
+               return;
+           }
+       }
+
+        System.err.println(String.format("Неверная карты колоды! (%d)", cardVal));
+    }
+
+    public int getValue() {
+        return value;
     }
 
     @Override

@@ -16,9 +16,8 @@ public class Deck {
 
     public void fillCards() {
         cards.clear();
-        for (Card.Rank rank : Card.Rank.values())
-            for (Card.Suit suit : Card.Suit.values())
-                cards.add(new Card(rank, suit));
+        for (String str : Card.list.keySet())
+                cards.add(new Card(str));
     }
 
     public Card takeCard() {
