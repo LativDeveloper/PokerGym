@@ -1,25 +1,28 @@
 package poker;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.TreeSet;
 
 public class Hand {
-    private TreeSet<Card> cards;
+    private ArrayList<Card> cards;
 
     public Hand(Card ... cards) {
-        this.cards = (TreeSet<Card>) new TreeSet<Card>().descendingSet();
+        this.cards = new ArrayList<>();
 
         this.cards.addAll(Arrays.asList(cards));
     }
 
-    public Hand(String cards) {
-        String[] array = cards.split(" ");
-        this.cards = (TreeSet<Card>) new TreeSet<Card>().descendingSet();
-        for (int i = 0; i < array.length; i++)
-            this.cards.add(new Card(array[i]));
+    public Hand(String ... cards) {
+        this.cards = new ArrayList<>();
+        for (int i = 0; i < cards.length; i++)
+            this.cards.add(new Card(cards[i]));
     }
 
-    public TreeSet<Card> getCards() {
+    public Hand(String cards) {
+        this(cards.split(" "));
+    }
+
+    public ArrayList<Card> getCards() {
         return cards;
     }
 
