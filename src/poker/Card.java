@@ -69,7 +69,7 @@ public class Card implements Comparable<Card> {
             cardStr = cardStr.trim();
 
             value = list.get(cardStr.toLowerCase());
-            name = cardStr;
+            name = cardStr.toLowerCase();
         } catch (NullPointerException e) {
             System.err.println(String.format("Неверная карты колоды! (%s)", cardStr));
             e.printStackTrace();

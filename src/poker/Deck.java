@@ -6,18 +6,21 @@ import java.util.Random;
 
 public class Deck {
     private List<Card> cards;
+    private List<Card> takenCards;
     private Random random;
 
     public Deck() {
         cards = new ArrayList<>();
+        takenCards = new ArrayList<>();
         random = new Random();
-        fillCards();
+        for (String str : Card.list.keySet())
+            cards.add(new Card(str));
     }
 
     public void fillCards() {
-        cards.clear();
-        for (String str : Card.list.keySet())
-                cards.add(new Card(str));
+        for (Card card : takenCards)
+                cards.add(card);
+        takenCards.clear();
     }
 
     public Card takeCard() {
@@ -25,6 +28,9 @@ public class Deck {
             System.err.println("Нельзя взять карту! (колода пустая)");
             return null;
         }
-        return cards.remove(random.nextInt(cards.size()));
+        int rand = random.nextInt(cards.size());
+        Card card = cards.remove(rand);
+        takenCards.add(card);
+        return card;
     }
 }

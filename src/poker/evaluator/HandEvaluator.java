@@ -24,7 +24,7 @@ public class HandEvaluator {
         }
     }
 
-    public static Combination evalHand(Hand hand, Card[] board) {
+    public static Combination evalHand(Hand hand, ArrayList<Card> board) {
         ArrayList cards = (ArrayList) hand.getCards().clone();
         if (board != null) {
             for (Card card : board)
