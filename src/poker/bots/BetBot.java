@@ -1,7 +1,6 @@
 package poker.bots;
 
 import poker.Card;
-import poker.Game;
 import poker.Player;
 
 import java.util.ArrayList;
