@@ -37,6 +37,8 @@ public class Pot {
 
             System.out.println(winners.toString() + " won " + entry.getKey() / winners.size());
         }
+
+        chips.clear();
     }
 
     private double getMinChips() {

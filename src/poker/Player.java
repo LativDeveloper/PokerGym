@@ -31,11 +31,17 @@ public abstract class Player {
         combination = HandEvaluator.evalHand(hand, board);
     }
 
-    public abstract String move(ArrayList<Player> players, int myPos, int dealerPos, double[] bets, ArrayList<Card> board);
+    public void clearCombination() {
+        combination = null;
+    }
+
+    public abstract String move(ArrayList<Player> players, Player dealer, double[] bets, ArrayList<Card> board);
 
     @Override
     public String toString() {
-        return name + "(" + bankroll + ")";
+        String str = name + "(" + bankroll + ") ";
+        if (combination != null) str += combination;
+        return str;
     }
 
     protected double getMinBet(double[] bets) {

@@ -16,9 +16,9 @@ public class BetBot extends Player {
     }
 
     @Override
-    public String move(ArrayList<Player> players, int myPos, int dealerPos, double[] bets, ArrayList<Card> board) {
+    public String move(ArrayList<Player> players, Player dealer, double[] bets, ArrayList<Card> board) {
         double minBet = getMinBet(bets);
-        if (minBet * 1.3 >= bankroll) return "all-in";
+        if (10 * 3 >= bankroll) return "all-in";
         return "bet small";
     }
 }

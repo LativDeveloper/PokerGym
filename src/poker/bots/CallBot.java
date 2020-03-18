@@ -15,8 +15,9 @@ public class CallBot extends Player {
     }
 
     @Override
-    public String move(ArrayList<Player> players, int myPos, int dealerPos, double[] bets, ArrayList<Card> board) {
+    public String move(ArrayList<Player> players, Player dealer, double[] bets, ArrayList<Card> board) {
         double minBet = getMinBet(bets);
+        int myPos = players.indexOf(this);
         if (minBet == 0 || bets[myPos] == minBet) return "check";
         return "call";
     }
