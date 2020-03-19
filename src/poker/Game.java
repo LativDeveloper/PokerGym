@@ -146,6 +146,7 @@ public class Game {
                 System.out.println(String.format("%s: %s", player, move));
                 break;
             case "fold":
+                roundPlayers.remove(player);
                 System.out.println(String.format("%s: %s", player, move));
                 break;
             case "bet small":
