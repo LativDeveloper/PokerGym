@@ -14,7 +14,6 @@ public class Game {
     private Player dealerPlayer;
     private Player movePlayer;
     private double minBet;
-    private double[] bets;
     private int round;
     private int movesInRound;
 
@@ -33,6 +32,7 @@ public class Game {
         System.out.println("Игра запущена");
         dealerPlayer = gamePlayers.get((int) (Math.random() * gamePlayers.size()));
         while (gamePlayers.size() > 1) {
+            System.out.println("Раздача запущена");
             deck.fillCards();
             board.clear();
             roundPlayers.addAll(gamePlayers);
@@ -40,14 +40,13 @@ public class Game {
             minBet = 0;
             round = 0;
             movesInRound = 0;
-            bets = new double[roundPlayers.size()];
 
             doBlinds();
             preflop();
 
             while (roundPlayers.size() > 1) {
-                String move = movePlayer.move(roundPlayers, dealerPlayer, bets, board);
-                move(movePlayer, move);
+                movePlayer.move(roundPlayers, dealerPlayer, board);
+                move(movePlayer, movePlayer.move);
                 movePlayer = nextMovePlayer();
                 if (isEndRound()) nextRound();
             }
@@ -115,12 +114,11 @@ public class Game {
         if (count > player.bankroll) count = player.bankroll;
         if (count > minBet) minBet = count;
         pot.add(player, count);
-        bets[roundPlayers.indexOf(player)] += count;
+        player.bet += count;
 //        System.out.println(String.format("%s: bet " + count, player));
     }
 
     private void move(Player player, String move) {
-        int pos = roundPlayers.indexOf(player);
         movesInRound++;
         switch (move) {
             case "sb":
@@ -134,11 +132,11 @@ public class Game {
                 movesInRound--;
                 break;
             case "call":
-                if (bets[pos] == minBet) {
+                if (player.bet == minBet) {
                     System.err.println(String.format("%s ходит неправильно (call, но его ставка уже уравнена)", player));
                     return;
                 }
-                double count = minBet - bets[pos];
+                double count = minBet - player.bet;
                 bet(player, count);
                 System.out.println(String.format("%s: %s (%s)", player, move, count));
                 break;
@@ -147,6 +145,7 @@ public class Game {
                 break;
             case "fold":
                 roundPlayers.remove(player);
+                movesInRound--;
                 System.out.println(String.format("%s: %s", player, move));
                 break;
             case "bet small":
@@ -188,12 +187,10 @@ public class Game {
     }
 
     private boolean isEndRound() {
-        int playersWithBankroll = 0;
-        for (Player player : roundPlayers)
-            if (player.bankroll > 0) playersWithBankroll++;
-        if (playersWithBankroll > movesInRound) return false;
-        for (int i = 0; i < bets.length; i++) {
-            if (bets[i] < minBet && roundPlayers.get(i).bankroll > 0) return false;
+        for (Player player : roundPlayers) {
+            if (player.bankroll > 0) {
+                if (player.bet < minBet || player.move == null) return false;
+            }
         }
         return true;
     }
@@ -235,8 +232,10 @@ public class Game {
                 System.out.println("Раздача сыграна");
                 break;
         }
-        for (int i = 0; i < bets.length; i++)
-            bets[i] = 0;
+        for (Player player : gamePlayers) {
+            player.bet = 0;
+            player.move = null;
+        }
         round++;
         movesInRound = 0;
         minBet = 0;

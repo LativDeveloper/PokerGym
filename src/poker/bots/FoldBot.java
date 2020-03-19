@@ -15,10 +15,9 @@ public class FoldBot extends Player {
     }
 
     @Override
-    public String move(ArrayList<Player> players, Player dealer, double[] bets, ArrayList<Card> board) {
-        double minBet = getMinBet(bets);
-        int myPos = players.indexOf(this);
-        if (minBet == 0 || bets[myPos] == minBet) return "check";
-        return "fold";
+    public void move(ArrayList<Player> players, Player dealer, ArrayList<Card> board) {
+        double minBet = getMinBet(players);
+        if (minBet == 0 || bet == minBet) move = "check";
+        else move = "fold";
     }
 }

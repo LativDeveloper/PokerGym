@@ -6,6 +6,8 @@ import java.util.ArrayList;
 
 public abstract class Player {
     public double bankroll;
+    public double bet;
+    public String move;
     private String name;
     private Hand hand;
     private Combination combination;
@@ -13,6 +15,8 @@ public abstract class Player {
     public Player(String name, double bankroll) {
         this.name = name;
         this.bankroll = bankroll;
+        this.bet = 0;
+        this.move = null;
     }
 
     public Hand getHand() {
@@ -35,7 +39,7 @@ public abstract class Player {
         combination = null;
     }
 
-    public abstract String move(ArrayList<Player> players, Player dealer, double[] bets, ArrayList<Card> board);
+    public abstract void move(ArrayList<Player> players, Player dealer, ArrayList<Card> board);
 
     @Override
     public String toString() {
@@ -44,10 +48,10 @@ public abstract class Player {
         return str;
     }
 
-    protected double getMinBet(double[] bets) {
+    protected double getMinBet(ArrayList<Player> players) {
         double minBet = 0;
-        for (double bet : bets)
-            if (bet > minBet) minBet = bet;
+        for (Player player : players)
+            if (player.bet > minBet) minBet = player.bet;
 
         return minBet;
     }
