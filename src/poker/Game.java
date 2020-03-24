@@ -15,7 +15,6 @@ public class Game {
     private Player movePlayer;
     private double minBet;
     private int round;
-    private int movesInRound;
 
     public Game(Player[] players, double bb, double bankroll) {
         this.bb = bb;
@@ -39,7 +38,7 @@ public class Game {
             dealerPlayer = nextDealer();
             minBet = 0;
             round = 0;
-            movesInRound = 0;
+            pot.init(roundPlayers);
 
             doBlinds();
             preflop();
@@ -113,23 +112,21 @@ public class Game {
     private void bet(Player player, double count) {
         if (count > player.bankroll) count = player.bankroll;
         if (count > minBet) minBet = count;
-        pot.add(player, count);
         player.bet += count;
+        player.invested += count;
+        player.bankroll -= count;
 //        System.out.println(String.format("%s: bet " + count, player));
     }
 
     private void move(Player player, String move) {
-        movesInRound++;
         switch (move) {
             case "sb":
                 bet(player, bb / 2);
-                movesInRound--;
                 System.out.println(String.format("%s: %s (%s)", player, move, bb / 2));
                 break;
             case "bb":
                 bet(player, bb);
                 System.out.println(String.format("%s: %s (%s)", player, move, bb));
-                movesInRound--;
                 break;
             case "call":
                 if (player.bet == minBet) {
@@ -145,7 +142,6 @@ public class Game {
                 break;
             case "fold":
                 roundPlayers.remove(player);
-                movesInRound--;
                 System.out.println(String.format("%s: %s", player, move));
                 break;
             case "bet small":
@@ -217,7 +213,16 @@ public class Game {
             case 3:
                 for (Player player : roundPlayers)
                     player.calcCombination(board);
-                pot.pay(roundPlayers);
+                pot.distribute(roundPlayers);
+
+                for (Player player : roundPlayers) {
+                    if (player.result > 0) player.bankroll += player.result;
+                    System.out.println(player + " won " + player.result);
+                    player.result = 0;
+//                    player.invested = 0;
+                    player.clearCombination();
+                }
+
                 for (int i = 0; i < roundPlayers.size(); i++) {
                     Player player = roundPlayers.get(i);
                     if (player.bankroll <= 0) {
@@ -226,7 +231,6 @@ public class Game {
                         }
                         gamePlayers.remove(player);
                     }
-                    player.clearCombination();
                 }
                 roundPlayers.clear();
                 System.out.println("Раздача сыграна");
@@ -237,7 +241,6 @@ public class Game {
             player.move = null;
         }
         round++;
-        movesInRound = 0;
         minBet = 0;
     }
 }

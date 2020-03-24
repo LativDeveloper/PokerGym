@@ -6,6 +6,8 @@ import java.util.ArrayList;
 
 public abstract class Player {
     public double bankroll;
+    public double invested;
+    public double result;
     public double bet;
     public String move;
     private String name;
@@ -15,6 +17,8 @@ public abstract class Player {
     public Player(String name, double bankroll) {
         this.name = name;
         this.bankroll = bankroll;
+        this.invested = 0;
+        this.result = 0;
         this.bet = 0;
         this.move = null;
     }
