@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 
 /**
- * Бот, который всегда делает малую ставку.
+ * Бот, который делает малую ставку, либо коллирует любую ставку.
  */
 public class BetBot extends Player {
 
@@ -18,7 +18,12 @@ public class BetBot extends Player {
     @Override
     public void move(ArrayList<Player> players, Player dealer, ArrayList<Card> board) {
         double minBet = getMinBet(players);
-        if (10 * 3 >= bankroll) move = "all-in";
-        else move = "bet small";
+        if (minBet > bet) {
+            if (10 * 3 >= bankroll) move = "all-in";
+            else move = "call";
+        } else {
+            if (10 * 3 >= bankroll) move = "all-in";
+            else move = "bet small";
+        }
     }
 }

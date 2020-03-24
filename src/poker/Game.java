@@ -69,10 +69,11 @@ public class Game {
         Player nextMovePlayer = null;
         for (int i = (movePos + 1) % roundPlayers.size(); i != movePos; i = (i + 1) % roundPlayers.size()) {
             nextMovePlayer = roundPlayers.get(i);
-            if (nextMovePlayer.bankroll > 0) return nextMovePlayer;
+            if (nextMovePlayer.bankroll > 0 && nextMovePlayer != movePlayer) return nextMovePlayer;
         }
-        if (movePlayer == nextMovePlayer) return null;
-        return nextMovePlayer;
+//        if (movePlayer == nextMovePlayer) return null;
+//        return nextMovePlayer;
+        return null;
     }
 
     private void clearGamePlayers() {
@@ -111,10 +112,10 @@ public class Game {
 
     private void bet(Player player, double count) {
         if (count > player.bankroll) count = player.bankroll;
-        if (count > minBet) minBet = count;
         player.bet += count;
         player.invested += count;
         player.bankroll -= count;
+        if (player.bet > minBet) minBet = player.bet;
 //        System.out.println(String.format("%s: bet " + count, player));
     }
 
@@ -172,12 +173,13 @@ public class Game {
                 System.out.println(String.format("%s: %s (%s)", player, move, count));
                 break;
             case "all-in":
-                if (player.bankroll == 0) {
-                    System.err.println(String.format("%s ходит неправильно (all-in, но фишек не имеет", player));
+                count = player.bankroll;
+                if (count == 0) {
+                    System.err.println(String.format("%s ходит неправильно (all-in, но фишек не имеет)", player));
                     return;
                 }
-                System.out.println(String.format("%s: %s (%s)", player, move, player.bankroll));
-                bet(player, player.bankroll);
+                bet(player, count);
+                System.out.println(String.format("%s: %s (%s)", player, move, count));
                 break;
         }
     }
